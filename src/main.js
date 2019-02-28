@@ -347,9 +347,19 @@ const renderFilters = () => {
 };
 
 const renderCards = () => {
+  const num = Math.floor(Math.random() * 8) + 1;
+
   cardsContainer.innerHTML = ``;
-  cardsContainer.innerHTML = cardTemplate.repeat(7);
+  cardsContainer.innerHTML = cardTemplate.repeat(num);
 };
 
 renderFilters();
 renderCards();
+
+const filters = filtersContainer.querySelectorAll(`.filter__input`);
+
+for (const filter of filters) {
+  filter.onclick = () => {
+    renderCards();
+  };
+}
