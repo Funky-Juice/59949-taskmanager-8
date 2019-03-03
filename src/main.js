@@ -1,12 +1,13 @@
-import {renderFilters, renderCards} from './render-elems';
+import {renderFilters, renderTasks} from './render-elems';
+
+renderFilters();
+renderTasks();
 
 const filters = document.querySelectorAll(`.filter__input`);
 
 for (const filter of filters) {
   filter.onclick = () => {
-    renderCards();
+    const qty = Math.floor(Math.random() * 7) + 1;
+    renderTasks(qty);
   };
 }
-
-renderFilters();
-renderCards();

@@ -1,3 +1,24 @@
+import {getRandomValFromArr, getRandomDate, getRandomLengthArr, getObjectFromArr} from '../utils';
+
+export const DATA = {
+  TITLE: [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`],
+  TAGS: [`homework`, `theory`, `practice`, `intensive`, `keks`],
+  COLORS: [`black`, `yellow`, `blue`, `green`, `pink`],
+  DAYS: [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`]
+};
+
+export const dataTemplate = () => {
+  return {
+    title: getRandomValFromArr(DATA.TITLE),
+    dueDate: getRandomDate(7),
+    tags: getRandomLengthArr(DATA.TAGS, 3),
+    picture: `http://picsum.photos/100/100?r=${Math.random()}`,
+    color: getRandomValFromArr(DATA.COLORS),
+    repeatingDays: getObjectFromArr(DATA.DAYS),
+    isFavorite: false,
+    isDone: false
+  };
+};
 
 export const filtersList = [
   {
