@@ -1,5 +1,5 @@
 import filterTemplate from './templates/filter-template';
-import cardTemplate from './templates/card-template';
+import taskTemplate from './templates/task-template';
 
 const filtersContainer = document.querySelector(`.main__filter`);
 const cardsContainer = document.querySelector(`.board__tasks`);
@@ -9,9 +9,9 @@ export const renderFilters = () => {
   filtersContainer.innerHTML = filterTemplate;
 };
 
-export const renderCards = () => {
+export const renderTasks = () => {
   const num = Math.floor(Math.random() * 8) + 1;
 
   cardsContainer.innerHTML = ``;
-  cardsContainer.innerHTML = cardTemplate.repeat(num);
+  cardsContainer.innerHTML = taskTemplate.repeat(num);
 };
