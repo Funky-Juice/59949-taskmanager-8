@@ -27,3 +27,12 @@ export const getObjectFromArr = (arr) => {
   }
   return newObj;
 };
+
+export const generateData = (template, objectsQty = 7) => {
+  const dataList = [];
+
+  for (let i = 0; i < objectsQty; i++) {
+    dataList.push(template());
+  }
+  return dataList;
+};
