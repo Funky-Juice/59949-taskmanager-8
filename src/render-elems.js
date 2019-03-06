@@ -1,6 +1,7 @@
 import filterTemplate from './templates/filter-template';
 import {dataTemplate} from './data/data';
 import TaskView from './view/task-view';
+import TaskEditView from './view/task-edit-view';
 
 const filtersContainer = document.querySelector(`.main__filter`);
 const tasksContainer = document.querySelector(`.board__tasks`);
@@ -11,8 +12,23 @@ export const renderFilters = () => {
 };
 
 export const renderTasks = () => {
+  const taskData = dataTemplate();
   tasksContainer.innerHTML = ``;
 
-  const task = new TaskView(dataTemplate());
-  task.render(tasksContainer);
+  const taskComponent = new TaskView(taskData);
+  const taskEditComponent = new TaskEditView(taskData);
+
+  tasksContainer.appendChild(taskComponent.render());
+
+  taskComponent.onEdit = () => {
+    taskEditComponent.render();
+    tasksContainer.replaceChild(taskEditComponent.element, taskComponent.element);
+    taskComponent.unrender();
+  };
+
+  taskEditComponent.onSubmit = () => {
+    taskComponent.render();
+    tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
+    taskEditComponent.unrender();
+  };
 };
