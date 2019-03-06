@@ -1,19 +1,18 @@
 import filterTemplate from './templates/filter-template';
-import taskTemplate from './templates/task-template';
-import {generateData} from './utils';
 import {dataTemplate} from './data/data';
+import TaskView from './view/task-view';
 
 const filtersContainer = document.querySelector(`.main__filter`);
-const cardsContainer = document.querySelector(`.board__tasks`);
+const tasksContainer = document.querySelector(`.board__tasks`);
 
 export const renderFilters = () => {
   filtersContainer.innerHTML = ``;
   filtersContainer.innerHTML = filterTemplate;
 };
 
-export const renderTasks = (tasksQty) => {
-  const tasksData = generateData(dataTemplate, tasksQty);
+export const renderTasks = () => {
+  tasksContainer.innerHTML = ``;
 
-  cardsContainer.innerHTML = ``;
-  cardsContainer.innerHTML = taskTemplate(tasksData);
+  const task = new TaskView(dataTemplate());
+  task.render(tasksContainer);
 };
