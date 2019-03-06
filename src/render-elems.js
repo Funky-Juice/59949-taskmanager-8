@@ -1,19 +1,34 @@
 import filterTemplate from './templates/filter-template';
-import taskTemplate from './templates/task-template';
-import {generateData} from './utils';
 import {dataTemplate} from './data/data';
+import TaskView from './view/task-view';
+import TaskEditView from './view/task-edit-view';
 
 const filtersContainer = document.querySelector(`.main__filter`);
-const cardsContainer = document.querySelector(`.board__tasks`);
+const tasksContainer = document.querySelector(`.board__tasks`);
 
 export const renderFilters = () => {
   filtersContainer.innerHTML = ``;
   filtersContainer.innerHTML = filterTemplate;
 };
 
-export const renderTasks = (tasksQty) => {
-  const tasksData = generateData(dataTemplate, tasksQty);
+export const renderTasks = () => {
+  const taskData = dataTemplate();
+  tasksContainer.innerHTML = ``;
 
-  cardsContainer.innerHTML = ``;
-  cardsContainer.innerHTML = taskTemplate(tasksData);
+  const taskComponent = new TaskView(taskData);
+  const taskEditComponent = new TaskEditView(taskData);
+
+  tasksContainer.appendChild(taskComponent.render());
+
+  taskComponent.onEdit = () => {
+    taskEditComponent.render();
+    tasksContainer.replaceChild(taskEditComponent.element, taskComponent.element);
+    taskComponent.unrender();
+  };
+
+  taskEditComponent.onSubmit = () => {
+    taskComponent.render();
+    tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
+    taskEditComponent.unrender();
+  };
 };
