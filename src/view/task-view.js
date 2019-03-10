@@ -1,8 +1,9 @@
-import {createElement} from '../utils';
+import ComponentView from './component';
 
-export default class TaskView {
+export default class TaskView extends ComponentView {
 
   constructor(data) {
+    super();
     this._title = data.title;
     this._dueDate = data.dueDate;
     this._tags = data.tags;
@@ -10,29 +11,12 @@ export default class TaskView {
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
 
-    this._element = null;
-    this._state = {};
     this._onEdit = null;
-  }
-
-  get element() {
-    return this._element;
+    this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
 
   set onEdit(fn) {
     this._onEdit = fn;
-  }
-
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-
-    return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
   }
 
   _onEditButtonClick() {
@@ -40,11 +24,11 @@ export default class TaskView {
   }
 
   bind() {
-    this._element.querySelector(`.card__btn--edit`).addEventListener(`click`, this._onEditButtonClick.bind(this));
+    this._element.querySelector(`.card__btn--edit`).addEventListener(`click`, this._onEditButtonClick);
   }
 
   unbind() {
-    this._element.querySelector(`.card__btn--edit`).removeEventListener(`click`, this._onEditButtonClick.bind(this));
+    this._element.querySelector(`.card__btn--edit`).removeEventListener(`click`, this._onEditButtonClick);
   }
 
   _isRepeated() {
