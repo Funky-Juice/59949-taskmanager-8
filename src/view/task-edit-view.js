@@ -1,9 +1,10 @@
+import ComponentView from './component';
 import {DATA} from '../data/data';
-import {createElement} from '../utils';
 
-export default class TaskEditView {
+export default class TaskEditView extends ComponentView {
 
   constructor(data) {
+    super();
     this._title = data.title;
     this._dueDate = data.dueDate;
     this._tags = data.tags;
@@ -11,28 +12,12 @@ export default class TaskEditView {
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
 
-    this._element = null;
     this._onSubmit = null;
-  }
-
-  get element() {
-    return this._element;
+    this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
   }
 
   set onSubmit(fn) {
     this._onSubmit = fn;
-  }
-
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-
-    return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
   }
 
   _onSubmitButtonClick(evt) {
@@ -41,11 +26,11 @@ export default class TaskEditView {
   }
 
   bind() {
-    this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick.bind(this));
+    this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick);
   }
 
   unbind() {
-    this._element.querySelector(`.card__form`).removeEventListener(`submit`, this._onSubmitButtonClick.bind(this));
+    this._element.querySelector(`.card__form`).removeEventListener(`submit`, this._onSubmitButtonClick);
   }
 
   _isRepeated() {
