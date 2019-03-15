@@ -1,3 +1,4 @@
+export const moment = require(`moment`);
 
 export const getRandomValFromArr = (arr) => arr[Math.floor(Math.random() * arr.length)];
 

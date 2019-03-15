@@ -1,4 +1,5 @@
 import ComponentView from './component';
+import {moment} from '../utils';
 
 export default class TaskView extends ComponentView {
 
@@ -78,8 +79,8 @@ export default class TaskView extends ComponentView {
         <div class="card__settings">
           <div class="card__details">
             <div class="card__dates">
-              <span class="card__date">${new Date(this._dueDate).toLocaleString(`en`, {day: `numeric`, month: `long`})}</span> 
-              <span class="card__date">${new Date(this._dueDate).toLocaleString(`en`, {hour: `2-digit`, minute: `2-digit`})}</span> 
+              <span class="card__date">${moment(this._dueDate).format(`DD MMMM`)}</span>
+              <span class="card__date">${moment(this._dueDate).format(`h:mm a`)}</span>
             </div>
             <div class="card__hashtag">
               <div class="card__hashtag-list">
