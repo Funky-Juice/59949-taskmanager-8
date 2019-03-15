@@ -32,6 +32,8 @@ export default class ComponentView {
     this._element = null;
   }
 
+  update() {}
+
   bind() {
     // By default there is nothing to bind
   }
