@@ -68,7 +68,10 @@ export default class TaskEditView extends ComponentView {
 
     for (const pair of formData.entries()) {
       const [property, value] = pair;
-      taskEditMapper[property] && taskEditMapper[property](value);
+
+      if (taskEditMapper[property]) {
+        taskEditMapper[property](value);
+      }
     }
 
     return entry;
@@ -79,7 +82,10 @@ export default class TaskEditView extends ComponentView {
 
     const formData = new FormData(this._element.querySelector(`.card__form`));
     const newData = this._processForm(formData);
-    typeof this._onSubmit === `function` && this._onSubmit(newData);
+
+    if (typeof this._onSubmit === `function`) {
+      this._onSubmit(newData);
+    }
 
     this.update(newData);
   }
