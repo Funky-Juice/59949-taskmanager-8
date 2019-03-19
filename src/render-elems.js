@@ -1,5 +1,4 @@
 import filterTemplate from './templates/filter-template';
-import {dataTemplate} from './data/data';
 import TaskView from './view/task-view';
 import TaskEditView from './view/task-edit-view';
 
@@ -11,31 +10,32 @@ export const renderFilters = () => {
   filtersContainer.innerHTML = filterTemplate;
 };
 
-export const renderTasks = () => {
-  const taskData = dataTemplate();
+export const renderTasks = (tasks) => {
   tasksContainer.innerHTML = ``;
 
-  const taskComponent = new TaskView(taskData);
-  const taskEditComponent = new TaskEditView(taskData);
+  tasks.forEach((task) => {
+    const taskComponent = new TaskView(task);
+    const taskEditComponent = new TaskEditView(task);
 
-  tasksContainer.appendChild(taskComponent.render());
+    tasksContainer.appendChild(taskComponent.render());
 
-  taskComponent.onEdit = () => {
-    taskEditComponent.render();
-    tasksContainer.replaceChild(taskEditComponent.element, taskComponent.element);
-    taskComponent.unrender();
-  };
+    taskComponent.onEdit = () => {
+      taskEditComponent.render();
+      tasksContainer.replaceChild(taskEditComponent.element, taskComponent.element);
+      taskComponent.unrender();
+    };
 
-  taskEditComponent.onSubmit = (newObject) => {
-    taskData.title = newObject.title;
-    taskData.tags = newObject.tags;
-    taskData.color = newObject.color;
-    taskData.repeatingDays = newObject.repeatingDays;
-    taskData.dueDate = newObject.dueDate;
+    taskEditComponent.onSubmit = (newObject) => {
+      task.title = newObject.title;
+      task.tags = newObject.tags;
+      task.color = newObject.color;
+      task.repeatingDays = newObject.repeatingDays;
+      task.dueDate = newObject.dueDate;
 
-    taskComponent.update(taskData);
-    taskComponent.render();
-    tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
-    taskEditComponent.unrender();
-  };
+      taskComponent.update(task);
+      taskComponent.render();
+      tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
+      taskEditComponent.unrender();
+    };
+  });
 };
