@@ -1,14 +1,24 @@
-import filterTemplate from './templates/filter-template';
 import TaskView from './view/task-view';
 import TaskEditView from './view/task-edit-view';
+import FilterView from './view/filter-view';
+import {filterTasks} from './utils';
+
 
 const filtersContainer = document.querySelector(`.main__filter`);
 const tasksContainer = document.querySelector(`.board__tasks`);
 
-
-export const renderFilters = () => {
+export const renderFilters = (filters, tasks) => {
   filtersContainer.innerHTML = ``;
-  filtersContainer.innerHTML = filterTemplate;
+
+  filters.forEach((filter) => {
+    const filterComponent = new FilterView(filter);
+    filtersContainer.appendChild(filterComponent.render());
+
+    filterComponent.onFilter = () => {
+      const filteredTasks = filterTasks(tasks, filterComponent.name);
+      renderTasks(filteredTasks);
+    };
+  });
 };
 
 export const renderTasks = (tasks) => {

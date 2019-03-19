@@ -44,3 +44,32 @@ export const createElement = (template) => {
 
   return elem.firstChild;
 };
+
+export const filterTasks = (tasks, filterName) => {
+
+  switch (filterName) {
+    case `all`:
+      return tasks;
+
+    case `overdue`:
+      return tasks.filter((it) => it.dueDate < Date.now());
+
+    case `today`:
+      return tasks.filter((it) => moment(it.dueDate).format(`YYYY-MM-DD`) === moment(Date.now()).format(`YYYY-MM-DD`));
+
+    case `favorites`:
+      return [];
+
+    case `repeating`:
+      return tasks.filter((it) => [...Object.entries(it.repeatingDays)].some((rec) => rec[1]));
+
+    case `tags`:
+      return [];
+
+    case `archive`:
+      return [];
+
+    default:
+      return tasks;
+  }
+};
