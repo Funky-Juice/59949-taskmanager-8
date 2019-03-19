@@ -21,10 +21,17 @@ export default class TaskEditView extends ComponentView {
 
     this._onChangeDate = this._onChangeDate.bind(this);
     this._onChangeRepeated = this._onChangeRepeated.bind(this);
+
+    this._onDelete = null;
+    this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
   }
 
   set onSubmit(fn) {
     this._onSubmit = fn;
+  }
+
+  set onDelete(fn) {
+    this._onDelete = fn;
   }
 
   static createMapper(target) {
@@ -90,8 +97,15 @@ export default class TaskEditView extends ComponentView {
     this.update(newData);
   }
 
+  _onDeleteButtonClick() {
+    if (typeof this._onDelete === `function`) {
+      this._onDelete();
+    }
+  }
+
   bind() {
     this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__delete`).addEventListener(`click`, this._onDeleteButtonClick);
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`).addEventListener(`click`, this._onChangeRepeated);
 
@@ -103,6 +117,7 @@ export default class TaskEditView extends ComponentView {
 
   unbind() {
     this._element.querySelector(`.card__form`).removeEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__delete`).removeEventListener(`click`, this._onDeleteButtonClick);
     this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`).removeEventListener(`click`, this._onChangeRepeated);
   }

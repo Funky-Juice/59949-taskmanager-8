@@ -16,7 +16,7 @@ export const dataTemplate = () => {
     color: getRandomValFromArr(DATA.COLORS),
     repeatingDays: getObjectFromArr(DATA.DAYS),
     isFavorite: false,
-    isDone: false
+    isDeleted: false
   };
 };
 

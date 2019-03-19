@@ -5,6 +5,7 @@ import TaskEditView from './view/task-edit-view';
 const filtersContainer = document.querySelector(`.main__filter`);
 const tasksContainer = document.querySelector(`.board__tasks`);
 
+
 export const renderFilters = () => {
   filtersContainer.innerHTML = ``;
   filtersContainer.innerHTML = filterTemplate;
@@ -14,6 +15,9 @@ export const renderTasks = (tasks) => {
   tasksContainer.innerHTML = ``;
 
   tasks.forEach((task) => {
+    if (task.isDeleted) {
+      return;
+    }
     const taskComponent = new TaskView(task);
     const taskEditComponent = new TaskEditView(task);
 
@@ -35,6 +39,11 @@ export const renderTasks = (tasks) => {
       taskComponent.update(task);
       taskComponent.render();
       tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
+      taskEditComponent.unrender();
+    };
+
+    taskEditComponent.onDelete = () => {
+      task.isDeleted = true;
       taskEditComponent.unrender();
     };
   });
