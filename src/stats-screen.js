@@ -6,6 +6,7 @@ import colorsChart from './charts/colors-chart';
 import {chartsDataAdapter} from './utils';
 import {tasksData} from './data/data';
 
+const totalTasksElem = document.querySelector(`.statistic__task-found`);
 
 const weekStart = moment().isoWeekday(0);
 const weekEnd = moment().isoWeekday(6);
@@ -37,6 +38,8 @@ export const renderCharts = (datesRange = [calendar.selectedDates[0], calendar.s
   daysChartLink = daysChart(chartsData);
   tagsChartLink = tagsChart(chartsData);
   colorsChartLink = colorsChart(chartsData);
+
+  totalTasksElem.innerHTML = chartsData.total;
 };
 
 export const destroyCharts = () => {

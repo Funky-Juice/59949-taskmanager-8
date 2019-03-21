@@ -112,6 +112,7 @@ export const chartsDataAdapter = (tasks, datesRange) => {
   return {
     days: daysAmount,
     tags: tagsAmount,
-    colors: colorsAmount
+    colors: colorsAmount,
+    total: filteredTasks.length
   };
 };
