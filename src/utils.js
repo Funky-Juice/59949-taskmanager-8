@@ -73,3 +73,41 @@ export const filterTasks = (tasks, filterName) => {
       return tasks;
   }
 };
+
+export const chartsDataAdapter = (tasks) => {
+  const daysAmount = {};
+  const tagsAmount = {};
+  const colorsAmount = {};
+
+  const filteredTasks = tasks.filter((task) => !task.isDeleted);
+
+  const daysArr = filteredTasks.map((task) => task.dueDate);
+  daysArr.sort((a, b) => a - b);
+
+  daysArr.forEach((day) => {
+    const date = moment(day).format(`DD MMM`);
+    daysAmount[date] = (daysAmount[date] || 0) + 1;
+  });
+
+
+  const tagsArr = [];
+  filteredTasks.map((task) => {
+    task.tags.forEach((tag) => tagsArr.push(tag));
+  });
+
+  tagsArr.forEach((tag) => {
+    tagsAmount[tag] = (tagsAmount[tag] || 0) + 1;
+  });
+
+
+  const colorsArr = filteredTasks.map((task) => task.color);
+  colorsArr.forEach((color) => {
+    colorsAmount[color] = (colorsAmount[color] || 0) + 1;
+  });
+
+  return {
+    days: daysAmount,
+    tags: tagsAmount,
+    colors: colorsAmount
+  };
+};

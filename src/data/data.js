@@ -1,4 +1,4 @@
-import {getRandomValFromArr, getRandomDate, getRandomLengthArr, getObjectFromArr} from '../utils';
+import {getRandomValFromArr, getRandomDate, getRandomLengthArr, getObjectFromArr, generateData} from '../utils';
 
 export const DATA = {
   TITLE: [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`],
@@ -50,3 +50,6 @@ export const filtersList = [
     count: 115
   }
 ];
+
+
+export const tasksData = generateData(dataTemplate);
