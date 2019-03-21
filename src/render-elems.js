@@ -1,41 +1,60 @@
-import filterTemplate from './templates/filter-template';
-import {dataTemplate} from './data/data';
 import TaskView from './view/task-view';
 import TaskEditView from './view/task-edit-view';
+import FilterView from './view/filter-view';
+import {filterTasks} from './utils';
+
 
 const filtersContainer = document.querySelector(`.main__filter`);
 const tasksContainer = document.querySelector(`.board__tasks`);
 
-export const renderFilters = () => {
+export const renderFilters = (filters, tasks) => {
   filtersContainer.innerHTML = ``;
-  filtersContainer.innerHTML = filterTemplate;
+
+  filters.forEach((filter) => {
+    const filterComponent = new FilterView(filter);
+    filtersContainer.appendChild(filterComponent.render());
+
+    filterComponent.onFilter = () => {
+      const filteredTasks = filterTasks(tasks, filterComponent.name);
+      renderTasks(filteredTasks);
+    };
+  });
 };
 
-export const renderTasks = () => {
-  const taskData = dataTemplate();
+export const renderTasks = (tasks) => {
   tasksContainer.innerHTML = ``;
 
-  const taskComponent = new TaskView(taskData);
-  const taskEditComponent = new TaskEditView(taskData);
+  tasks.forEach((task) => {
+    if (task.isDeleted) {
+      return;
+    }
+    const taskComponent = new TaskView(task);
+    const taskEditComponent = new TaskEditView(task);
 
-  tasksContainer.appendChild(taskComponent.render());
+    tasksContainer.appendChild(taskComponent.render());
 
-  taskComponent.onEdit = () => {
-    taskEditComponent.render();
-    tasksContainer.replaceChild(taskEditComponent.element, taskComponent.element);
-    taskComponent.unrender();
-  };
+    taskComponent.onEdit = () => {
+      taskEditComponent.render();
+      tasksContainer.replaceChild(taskEditComponent.element, taskComponent.element);
+      taskComponent.unrender();
+    };
 
-  taskEditComponent.onSubmit = (newObject) => {
-    taskData.title = newObject.title;
-    taskData.tags = newObject.tags;
-    taskData.color = newObject.color;
-    taskData.repeatingDays = newObject.repeatingDays;
-    taskData.dueDate = newObject.dueDate;
+    taskEditComponent.onSubmit = (newObject) => {
+      task.title = newObject.title;
+      task.tags = newObject.tags;
+      task.color = newObject.color;
+      task.repeatingDays = newObject.repeatingDays;
+      task.dueDate = newObject.dueDate;
 
-    taskComponent.update(taskData);
-    taskComponent.render();
-    tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
-    taskEditComponent.unrender();
-  };
+      taskComponent.update(task);
+      taskComponent.render();
+      tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
+      taskEditComponent.unrender();
+    };
+
+    taskEditComponent.onDelete = () => {
+      task.isDeleted = true;
+      taskEditComponent.unrender();
+    };
+  });
 };

@@ -1,13 +1,7 @@
 import {renderFilters, renderTasks} from './render-elems';
+import {tasksData, filtersList} from './data/data';
+import './menu';
 
-renderFilters();
-renderTasks();
 
-const filters = document.querySelectorAll(`.filter__input`);
-
-for (const filter of filters) {
-  filter.onclick = () => {
-    const qty = Math.floor(Math.random() * 7) + 1;
-    renderTasks(qty);
-  };
-}
+renderFilters(filtersList, tasksData);
+renderTasks(tasksData);

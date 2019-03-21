@@ -1,5 +1,6 @@
 import ComponentView from './component';
 import {DATA} from '../data/data';
+// eslint-disable-next-line
 import flatpickr from 'flatpickr';
 
 export default class TaskEditView extends ComponentView {
@@ -21,10 +22,17 @@ export default class TaskEditView extends ComponentView {
 
     this._onChangeDate = this._onChangeDate.bind(this);
     this._onChangeRepeated = this._onChangeRepeated.bind(this);
+
+    this._onDelete = null;
+    this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
   }
 
   set onSubmit(fn) {
     this._onSubmit = fn;
+  }
+
+  set onDelete(fn) {
+    this._onDelete = fn;
   }
 
   static createMapper(target) {
@@ -42,7 +50,14 @@ export default class TaskEditView extends ComponentView {
         target.repeatingDays[value] = true;
       },
       date: (value) => {
-        return target.dueDate[value];
+        target.dueDate = new Date(value);
+        return target.dueDate;
+      },
+      time: (value) => {
+        const date = value.split(`:`);
+        target.dueDate.setHours(date[0]);
+        target.dueDate.setMinutes(date[1]);
+        return target.dueDate;
       }
     };
   }
@@ -73,6 +88,7 @@ export default class TaskEditView extends ComponentView {
         taskEditMapper[property](value);
       }
     }
+    entry.dueDate = entry.dueDate.getTime();
 
     return entry;
   }
@@ -90,19 +106,38 @@ export default class TaskEditView extends ComponentView {
     this.update(newData);
   }
 
+  _onDeleteButtonClick() {
+    if (typeof this._onDelete === `function`) {
+      this._onDelete();
+    }
+  }
+
   bind() {
     this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__delete`).addEventListener(`click`, this._onDeleteButtonClick);
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`).addEventListener(`click`, this._onChangeRepeated);
 
-    if (this._state.isDate) {
-      flatpickr(`.card__date`, {altInput: true, altFormat: `j F`, dateFormat: `j F`});
-      flatpickr(`.card__time`, {enableTime: true, noCalendar: true, altInput: true, altFormat: `h:i K`, dateFormat: `h:i K`});
-    }
+    this._element.querySelector(`.card__date`).flatpickr({
+      altInput: true,
+      altFormat: `j F`,
+      dateFormat: `Y-m-d`,
+      defaultDate: this._dueDate
+    });
+
+    this._element.querySelector(`.card__time`).flatpickr({
+      enableTime: true,
+      noCalendar: true,
+      altInput: true,
+      altFormat: `h:i K`,
+      dateFormat: `H:i`,
+      defaultDate: this._dueDate
+    });
   }
 
   unbind() {
     this._element.querySelector(`.card__form`).removeEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__delete`).removeEventListener(`click`, this._onDeleteButtonClick);
     this._element.querySelector(`.card__date-deadline-toggle`).removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`).removeEventListener(`click`, this._onChangeRepeated);
   }
@@ -181,13 +216,12 @@ export default class TaskEditView extends ComponentView {
                 </button>
   
                 <fieldset class="card__date-deadline" ${!this._state.isDate && `disabled`}>
-                    <label class="card__input-deadline-wrap">
-                      <input
-                        class="card__date"
-                        type="text"
-                        placeholder="23 September"
-                        name="date"
-                        value="${new Date(this._dueDate).toLocaleString(`en`, {day: `numeric`, month: `long`})}"
+                  <label class="card__input-deadline-wrap">
+                    <input
+                      class="card__date"
+                      type="text"
+                      placeholder="23 September"
+                      name="date"
                     />
                   </label>
                   <label class="card__input-deadline-wrap">
@@ -196,7 +230,6 @@ export default class TaskEditView extends ComponentView {
                       type="text"
                       placeholder="11:15 PM"
                       name="time"
-                      value="${new Date(this._dueDate).toLocaleTimeString(`en`, {hour: `2-digit`, minute: `2-digit`})}"
                     />
                   </label>
                 </fieldset>
