@@ -10,14 +10,20 @@ import {tasksData} from './data/data';
 const weekStart = moment().isoWeekday(0);
 const weekEnd = moment().isoWeekday(6);
 
-flatpickr(`.statistic__period-input`, {
+const calendar = flatpickr(`.statistic__period-input`, {
   locale: {
     rangeSeparator: ` — `
   },
   mode: `range`,
   enableTime: false,
   dateFormat: `j F`,
-  defaultDate: [weekStart._d, weekEnd._d]
+  defaultDate: [weekStart._d, weekEnd._d],
+  onChange(selectedDates) {
+    if (selectedDates.length === 2) {
+      destroyCharts();
+      renderCharts(selectedDates);
+    }
+  }
 });
 
 
@@ -25,8 +31,8 @@ let daysChartLink;
 let tagsChartLink;
 let colorsChartLink;
 
-export const renderCharts = () => {
-  const chartsData = chartsDataAdapter(tasksData);
+export const renderCharts = (datesRange = [calendar.selectedDates[0], calendar.selectedDates[1]]) => {
+  const chartsData = chartsDataAdapter(tasksData, datesRange);
 
   daysChartLink = daysChart(chartsData);
   tagsChartLink = tagsChart(chartsData);
@@ -34,7 +40,14 @@ export const renderCharts = () => {
 };
 
 export const destroyCharts = () => {
-  daysChartLink.destroy();
-  tagsChartLink.destroy();
-  colorsChartLink.destroy();
+
+  if (daysChartLink) {
+    daysChartLink.destroy();
+  }
+  if (tagsChartLink) {
+    tagsChartLink.destroy();
+  }
+  if (colorsChartLink) {
+    colorsChartLink.destroy();
+  }
 };

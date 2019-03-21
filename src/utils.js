@@ -74,12 +74,16 @@ export const filterTasks = (tasks, filterName) => {
   }
 };
 
-export const chartsDataAdapter = (tasks) => {
+export const chartsDataAdapter = (tasks, datesRange) => {
   const daysAmount = {};
   const tagsAmount = {};
   const colorsAmount = {};
 
-  const filteredTasks = tasks.filter((task) => !task.isDeleted);
+  const actualTasks = tasks.filter((task) => !task.isDeleted);
+
+  const filteredTasks = actualTasks.filter((task) => {
+    return task.dueDate >= datesRange[0] && task.dueDate <= datesRange[1];
+  });
 
   const daysArr = filteredTasks.map((task) => task.dueDate);
   daysArr.sort((a, b) => a - b);
