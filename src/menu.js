@@ -1,5 +1,4 @@
-import {renderCharts, destroyCharts} from './stats-screen';
-import './stats-screen';
+import {renderCharts, destroyCharts} from './screen/stats-screen';
 
 const boardContainer = document.querySelector(`.board.container`);
 const statisticContainer = document.querySelector(`.statistic.container`);

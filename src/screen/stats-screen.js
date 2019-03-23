@@ -1,10 +1,10 @@
 import flatpickr from 'flatpickr';
-import {moment} from './utils';
-import daysChart from './charts/days-chart';
-import tagsChart from './charts/tags-chart';
-import colorsChart from './charts/colors-chart';
-import {chartsDataAdapter} from './utils';
-import {tasksData} from './data/data';
+import {moment} from '../utils';
+import daysChart from '../charts/days-chart';
+import tagsChart from '../charts/tags-chart';
+import colorsChart from '../charts/colors-chart';
+import {chartsDataAdapter} from '../utils';
+import {tasksData} from '../data/data';
 
 const totalTasksElem = document.querySelector(`.statistic__task-found`);
 

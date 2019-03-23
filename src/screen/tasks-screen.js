@@ -1,7 +1,7 @@
-import TaskView from './view/task-view';
-import TaskEditView from './view/task-edit-view';
-import FilterView from './view/filter-view';
-import {filterTasks} from './utils';
+import TaskView from '../view/task-view';
+import TaskEditView from '../view/task-edit-view';
+import FilterView from '../view/filter-view';
+import {filterTasks} from '../utils';
 
 
 const filtersContainer = document.querySelector(`.main__filter`);

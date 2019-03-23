@@ -1,4 +1,4 @@
-import {renderFilters, renderTasks} from './render-elems';
+import {renderFilters, renderTasks} from './screen/tasks-screen';
 import {tasksData, filtersList} from './data/data';
 import './menu';
 
