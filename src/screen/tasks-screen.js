@@ -2,6 +2,7 @@ import TaskView from '../view/task-view';
 import TaskEditView from '../view/task-edit-view';
 import FilterView from '../view/filter-view';
 import {filterTasks} from '../utils';
+import {api, fetchTasks} from '../main';
 
 
 const filtersContainer = document.querySelector(`.main__filter`);
@@ -25,9 +26,6 @@ export const renderTasks = (tasks) => {
   tasksContainer.innerHTML = ``;
 
   tasks.forEach((task) => {
-    if (task.isDeleted) {
-      return;
-    }
     const taskComponent = new TaskView(task);
     const taskEditComponent = new TaskEditView(task);
 
@@ -52,9 +50,9 @@ export const renderTasks = (tasks) => {
       taskEditComponent.unrender();
     };
 
-    taskEditComponent.onDelete = () => {
-      task.isDeleted = true;
-      taskEditComponent.unrender();
+    taskEditComponent.onDelete = (id) => {
+      api.deleteTask(id)
+        .then(() => fetchTasks());
     };
   });
 };

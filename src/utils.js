@@ -79,9 +79,8 @@ export const chartsDataAdapter = (tasks, datesRange) => {
   const tagsAmount = {};
   const colorsAmount = {};
 
-  const actualTasks = tasks.filter((task) => !task.isDeleted);
 
-  const filteredTasks = actualTasks.filter((task) => {
+  const filteredTasks = tasks.filter((task) => {
     return task.dueDate >= datesRange[0] && task.dueDate <= datesRange[1];
   });
 

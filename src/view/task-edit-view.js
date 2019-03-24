@@ -7,6 +7,7 @@ export default class TaskEditView extends ComponentView {
 
   constructor(data) {
     super();
+    this._id = data.id;
     this._title = data.title;
     this._dueDate = data.dueDate;
     this._tags = data.tags;
@@ -108,7 +109,7 @@ export default class TaskEditView extends ComponentView {
 
   _onDeleteButtonClick() {
     if (typeof this._onDelete === `function`) {
-      this._onDelete();
+      this._onDelete({id: this._id});
     }
   }
 
