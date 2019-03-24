@@ -4,12 +4,12 @@ import daysChart from '../charts/days-chart';
 import tagsChart from '../charts/tags-chart';
 import colorsChart from '../charts/colors-chart';
 import {chartsDataAdapter} from '../utils';
-import {tasksData} from '../data/data';
+import {tasksData} from '../main';
 
 const totalTasksElem = document.querySelector(`.statistic__task-found`);
 
-const weekStart = moment().isoWeekday(0);
-const weekEnd = moment().isoWeekday(6);
+const weekStart = moment().isoWeekday(1);
+const weekEnd = moment().isoWeekday(7);
 
 const calendar = flatpickr(`.statistic__period-input`, {
   locale: {

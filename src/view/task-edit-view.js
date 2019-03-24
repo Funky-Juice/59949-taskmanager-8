@@ -293,7 +293,7 @@ export default class TaskEditView extends ComponentView {
                 name="img"
               />
               <img
-                src="${this._picture}"
+                src="https:${this._picture}"
                 alt="task picture"
                 class="card__img"
               />

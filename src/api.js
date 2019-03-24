@@ -1,3 +1,4 @@
+import TaskModel from './data/task-model';
 
 const Method = {
   GET: `GET`,
@@ -20,7 +21,11 @@ export default class API {
     this._authorization = authorization;
   }
 
-  getTasks() {}
+  getTasks() {
+    return this._load({url: `tasks`})
+      .then((res) => res.json())
+      .then(TaskModel.parseTasks);
+  }
 
   createTask() {}
 

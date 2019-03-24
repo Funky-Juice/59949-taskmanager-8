@@ -1,5 +1,5 @@
 import {renderFilters, renderTasks} from './screen/tasks-screen';
-import {tasksData, filtersList} from './data/data';
+import {filtersList} from './data/data';
 import Api from './api';
 import './menu';
 
@@ -8,5 +8,10 @@ const API_URL = `https://es8-demo-srv.appspot.com/task-manager`;
 
 const api = new Api(API_URL, AUTHORIZATION);
 
-renderFilters(filtersList, tasksData);
-renderTasks(tasksData);
+export let tasksData = [];
+
+api.getTasks().then((tasks) => {
+  tasksData = tasks;
+  renderFilters(filtersList, tasksData);
+  renderTasks(tasksData);
+});

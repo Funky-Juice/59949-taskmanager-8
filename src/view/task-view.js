@@ -98,7 +98,7 @@ export default class TaskView extends ComponentView {
 
           <label class="card__img-wrap">
             <img
-              src="${this._picture}"
+              src="https:${this._picture}"
               alt="task picture"
               class="card__img"
             />
