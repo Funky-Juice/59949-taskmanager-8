@@ -44,18 +44,35 @@ export const renderTasks = (tasks) => {
       task.repeatingDays = newObject.repeatingDays;
       task.dueDate = newObject.dueDate;
 
+      taskEditComponent.block(`save`);
+      taskEditComponent.changeBorderColor(`#000000`);
+
       api.updateTask({id: task.id, data: task.toRAW()})
         .then((newTask) => {
+          taskEditComponent.unblock();
           taskComponent.update(newTask);
           taskComponent.render();
           tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
           taskEditComponent.unrender();
+        })
+        .catch(() => {
+          taskEditComponent.shake();
+          taskEditComponent.unblock();
+          taskEditComponent.changeBorderColor(`red`);
         });
     };
 
     taskEditComponent.onDelete = (id) => {
+      taskEditComponent.block();
+      taskEditComponent.changeBorderColor(`#000000`);
+
       api.deleteTask(id)
-        .then(() => fetchTasks());
+        .then(() => fetchTasks())
+        .catch(() => {
+          taskEditComponent.shake();
+          taskEditComponent.unblock();
+          taskEditComponent.changeBorderColor(`red`);
+        });
     };
   });
 };
