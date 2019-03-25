@@ -2,7 +2,7 @@ import TaskView from '../view/task-view';
 import TaskEditView from '../view/task-edit-view';
 import FilterView from '../view/filter-view';
 import {filterTasks} from '../utils';
-import {api, fetchTasks} from '../main';
+import {api} from '../main';
 
 
 const filtersContainer = document.querySelector(`.main__filter`);
@@ -67,7 +67,7 @@ export const renderTasks = (tasks) => {
       taskEditComponent.changeBorderColor(`#000000`);
 
       api.deleteTask(id)
-        .then(() => fetchTasks())
+        .then(taskEditComponent.unrender())
         .catch(() => {
           taskEditComponent.shake();
           taskEditComponent.unblock();

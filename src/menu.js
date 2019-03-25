@@ -1,4 +1,5 @@
 import {renderCharts, destroyCharts} from './screen/stats-screen';
+import {fetchTasks} from './main';
 
 const filtersContainer = document.querySelector(`.main__filter.container`);
 const boardContainer = document.querySelector(`.board.container`);
@@ -13,6 +14,7 @@ statsBtn.addEventListener(`click`, () => {
   filtersContainer.classList.add(`visually-hidden`);
   statisticContainer.classList.remove(`visually-hidden`);
 
+  destroyCharts();
   renderCharts();
 });
 
@@ -21,5 +23,5 @@ tasksBtn.addEventListener(`click`, () => {
   boardContainer.classList.remove(`visually-hidden`);
   filtersContainer.classList.remove(`visually-hidden`);
 
-  destroyCharts();
+  fetchTasks();
 });
