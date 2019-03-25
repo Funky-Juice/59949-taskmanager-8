@@ -1,7 +1,8 @@
-import TaskView from './view/task-view';
-import TaskEditView from './view/task-edit-view';
-import FilterView from './view/filter-view';
-import {filterTasks} from './utils';
+import TaskView from '../view/task-view';
+import TaskEditView from '../view/task-edit-view';
+import FilterView from '../view/filter-view';
+import {filterTasks} from '../utils';
+import {api} from '../main';
 
 
 const filtersContainer = document.querySelector(`.main__filter`);
@@ -25,9 +26,6 @@ export const renderTasks = (tasks) => {
   tasksContainer.innerHTML = ``;
 
   tasks.forEach((task) => {
-    if (task.isDeleted) {
-      return;
-    }
     const taskComponent = new TaskView(task);
     const taskEditComponent = new TaskEditView(task);
 
@@ -46,15 +44,35 @@ export const renderTasks = (tasks) => {
       task.repeatingDays = newObject.repeatingDays;
       task.dueDate = newObject.dueDate;
 
-      taskComponent.update(task);
-      taskComponent.render();
-      tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
-      taskEditComponent.unrender();
+      taskEditComponent.block(`save`);
+      taskEditComponent.changeBorderColor(`#000000`);
+
+      api.updateTask({id: task.id, data: task.toRAW()})
+        .then((newTask) => {
+          taskEditComponent.unblock();
+          taskComponent.update(newTask);
+          taskComponent.render();
+          tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
+          taskEditComponent.unrender();
+        })
+        .catch(() => {
+          taskEditComponent.shake();
+          taskEditComponent.unblock();
+          taskEditComponent.changeBorderColor(`red`);
+        });
     };
 
-    taskEditComponent.onDelete = () => {
-      task.isDeleted = true;
-      taskEditComponent.unrender();
+    taskEditComponent.onDelete = (id) => {
+      taskEditComponent.block();
+      taskEditComponent.changeBorderColor(`#000000`);
+
+      api.deleteTask(id)
+        .then(taskEditComponent.unrender())
+        .catch(() => {
+          taskEditComponent.shake();
+          taskEditComponent.unblock();
+          taskEditComponent.changeBorderColor(`red`);
+        });
     };
   });
 };

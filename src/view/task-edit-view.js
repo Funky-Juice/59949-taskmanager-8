@@ -7,6 +7,7 @@ export default class TaskEditView extends ComponentView {
 
   constructor(data) {
     super();
+    this._id = data.id;
     this._title = data.title;
     this._dueDate = data.dueDate;
     this._tags = data.tags;
@@ -25,6 +26,10 @@ export default class TaskEditView extends ComponentView {
 
     this._onDelete = null;
     this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
+
+    this._saveBtn = null;
+    this._deleteBtn = null;
+    this._taskWrapper = null;
   }
 
   set onSubmit(fn) {
@@ -108,7 +113,7 @@ export default class TaskEditView extends ComponentView {
 
   _onDeleteButtonClick() {
     if (typeof this._onDelete === `function`) {
-      this._onDelete();
+      this._onDelete({id: this._id});
     }
   }
 
@@ -117,6 +122,10 @@ export default class TaskEditView extends ComponentView {
     this._element.querySelector(`.card__delete`).addEventListener(`click`, this._onDeleteButtonClick);
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`).addEventListener(`click`, this._onChangeRepeated);
+
+    this._saveBtn = this._element.querySelector(`.card__save`);
+    this._deleteBtn = this._element.querySelector(`.card__delete`);
+    this._taskWrapper = this._element.querySelector(`.card--edit .card__inner`);
 
     this._element.querySelector(`.card__date`).flatpickr({
       altInput: true,
@@ -170,6 +179,38 @@ export default class TaskEditView extends ComponentView {
 
   _partialUpdate() {
     this._element.innerHTML = this.template;
+  }
+
+  shake() {
+    const ANIMATION_TIMEOUT = 600;
+    this._element.style.animation = `shake ${ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._element.style.animation = ``;
+    }, ANIMATION_TIMEOUT);
+  }
+
+  block(method) {
+    this._saveBtn.disabled = true;
+    this._deleteBtn.disabled = true;
+
+    if (method === `save`) {
+      this._saveBtn.innerText = `Saving...`;
+    } else {
+      this._deleteBtn.innerText = `Deleting...`;
+    }
+  }
+
+  unblock() {
+    this._saveBtn.disabled = false;
+    this._deleteBtn.disabled = false;
+
+    this._saveBtn.innerText = `Save`;
+    this._deleteBtn.innerText = `Delete`;
+  }
+
+  changeBorderColor(color) {
+    this._taskWrapper.style.borderColor = color;
   }
 
   get template() {
@@ -293,7 +334,7 @@ export default class TaskEditView extends ComponentView {
                 name="img"
               />
               <img
-                src="${this._picture}"
+                src="https:${this._picture}"
                 alt="task picture"
                 class="card__img"
               />
