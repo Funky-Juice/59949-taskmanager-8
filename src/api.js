@@ -29,7 +29,16 @@ export default class API {
 
   createTask() {}
 
-  updateTask() {}
+  updateTask({id, data}) {
+    return this._load({
+      url: `tasks/${id}`,
+      method: Method.PUT,
+      body: JSON.stringify(data),
+      headers: new Headers({'Content-Type': `application/json`})
+    })
+      .then((res) => res.json())
+      .then(TaskModel.parseTask);
+  }
 
   deleteTask({id}) {
     return this._load({url: `tasks/${id}`, method: Method.DELETE});

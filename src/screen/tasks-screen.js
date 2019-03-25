@@ -44,10 +44,13 @@ export const renderTasks = (tasks) => {
       task.repeatingDays = newObject.repeatingDays;
       task.dueDate = newObject.dueDate;
 
-      taskComponent.update(task);
-      taskComponent.render();
-      tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
-      taskEditComponent.unrender();
+      api.updateTask({id: task.id, data: task.toRAW()})
+        .then((newTask) => {
+          taskComponent.update(newTask);
+          taskComponent.render();
+          tasksContainer.replaceChild(taskComponent.element, taskEditComponent.element);
+          taskEditComponent.unrender();
+        });
     };
 
     taskEditComponent.onDelete = (id) => {
