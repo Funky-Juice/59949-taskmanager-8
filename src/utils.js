@@ -38,6 +38,10 @@ export const generateData = (template, objectsQty = 7) => {
   return dataList;
 };
 
+export const objectToArray = (object) => {
+  return Object.keys(object).map((id) => object[id]);
+};
+
 export const createElement = (template) => {
   const elem = document.createElement(`div`);
   elem.innerHTML = template;
