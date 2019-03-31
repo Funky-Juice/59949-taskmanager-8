@@ -2,7 +2,7 @@ import TaskView from '../view/task-view';
 import TaskEditView from '../view/task-edit-view';
 import FilterView from '../view/filter-view';
 import {filterTasks} from '../utils';
-import {api} from '../main';
+import {provider} from '../main';
 
 
 const filtersContainer = document.querySelector(`.main__filter`);
@@ -47,7 +47,7 @@ export const renderTasks = (tasks) => {
       taskEditComponent.block(`save`);
       taskEditComponent.changeBorderColor(`#000000`);
 
-      api.updateTask({id: task.id, data: task.toRAW()})
+      provider.updateTask({id: task.id, data: task.toRAW()})
         .then((newTask) => {
           taskEditComponent.unblock();
           taskComponent.update(newTask);
@@ -66,7 +66,7 @@ export const renderTasks = (tasks) => {
       taskEditComponent.block();
       taskEditComponent.changeBorderColor(`#000000`);
 
-      api.deleteTask(id)
+      provider.deleteTask(id)
         .then(taskEditComponent.unrender())
         .catch(() => {
           taskEditComponent.shake();
