@@ -15,10 +15,16 @@ const TASKS_STORE_KEY = `tasks-store-key`;
 
 const api = new Api(API_URL, AUTHORIZATION);
 const store = new Store({key: TASKS_STORE_KEY, storage: localStorage});
-export const provider = new Provider({api, store});
+export const provider = new Provider({api, store, generateId: () => String(Date.now())});
+
+window.addEventListener(`offline`, () => (document.title = `${document.title} [OFFLINE]`));
+window.addEventListener(`online`, () => {
+  document.title = document.title.split(`[OFFLINE]`)[0];
+  provider.syncTasks();
+});
+
 
 export let tasksData = [];
-
 
 export const fetchTasks = () => {
   messageContainer.innerText = `Loading tasks...`;

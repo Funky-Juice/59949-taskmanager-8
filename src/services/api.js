@@ -44,6 +44,16 @@ export default class API {
     return this._load({url: `tasks/${id}`, method: Method.DELETE});
   }
 
+  syncTasks({tasks}) {
+    return this._load({
+      url: `tasks/sync`,
+      method: Method.POST,
+      body: JSON.stringify(tasks),
+      headers: new Headers({'Content-Type': `application/json`})
+    })
+      .then((res) => res.json());
+  }
+
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
 

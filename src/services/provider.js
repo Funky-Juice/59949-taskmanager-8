@@ -14,6 +14,10 @@ export default class Provider {
     return window.navigator.onLine;
   }
 
+  syncTasks() {
+    return this._api.syncTasks({tasks: objectToArray(this._store.getAll())});
+  }
+
   updateTask({id, data}) {
     if (this._isOnline()) {
       return this._api.updateTask({id, data})
