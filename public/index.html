@@ -143,6 +143,16 @@
         <button class="load-more" type="button">load more</button>
       </section>
     </main>
+
     <script src="./bundle.js"></script>
+    <script>
+      navigator.serviceWorker.register(`./sw.js`)
+        .then(function (reg) {
+          console.log(`Registration succeeded. Scope is ` + reg.scope);
+        })
+        .catch(function (err) {
+          console.log(`Registration failed with ` + err);
+        });
+    </script>
   </body>
 </html>
