@@ -39,7 +39,7 @@ export const fetchTasks = () => {
       renderTasks(tasksData);
     })
     .catch(() => {
-      messageContainer.innerHTML = `Something went wrong while loading your tasks.
+      messageContainer.innerHTML = `Something went wrong while loading your tasks.${`<br>`}
       Check your connection or try again later.`;
     });
 };
